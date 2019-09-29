@@ -1,9 +1,10 @@
 'use strict';
 // генерация случайных чисел
-function getRandomInteger(min, max) {
+var getRandomInteger = function (min, max) {
   var rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
-}
+};
+
 // константы
 var DESCRIPTION = [
   'Отличная фотография',
@@ -46,7 +47,7 @@ var getPictures = function () {
         name: USERNAMES[getRandomInteger(0, USERNAMES.length - 1)],
       };
       comments.push(comment);
-    };
+    }
     var pictures = {
       url: 'photos/' + i + '.jpg',
       description: DESCRIPTION[getRandomInteger(0, DESCRIPTION.length - 1)],
@@ -54,7 +55,7 @@ var getPictures = function () {
       comments: comments,
     };
     picturesList.push(pictures);
-  };
+  }
   return picturesList;
 };
 
