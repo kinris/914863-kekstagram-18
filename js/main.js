@@ -1,9 +1,10 @@
 'use strict';
-
+// генерация случайных чисел
 function getRandomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 }
+// константы
 var DESCRIPTION = [
   'Отличная фотография',
   'Хорошая фотография',
@@ -32,6 +33,7 @@ var USERNAMES = [
 ];
 var NUMBER_PICTURES = 25;
 
+// Создания массива из 25 сгенерированных JS объектов. Каждый объект массива ‐ описание фотографии, опубликованной пользователем
 var getPictures = function () {
   var picturesList = [];
   for (var i = 1; i <= NUMBER_PICTURES; i++) {
@@ -56,6 +58,25 @@ var getPictures = function () {
   return picturesList;
 };
 
+// На основе данных, созданных в предыдущем пункте и шаблона #picture создайте DOM-элементы, соответствующие фотографиям и заполните их данными из массива
 var pictures = getPictures();
-console.log(pictures);
-//---------------------------
+
+var picturesElementList = document.querySelector('.pictures');
+
+var pictureTemplates = document.querySelector('#picture')
+    .content
+    .querySelector('.picture');
+
+// Отрисовка объектов
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < pictures.length; i++) {
+  var pictureElement = pictureTemplates.cloneNode(true);
+  pictureElement.querySelector('.picture__img').src = pictures[i].url;
+  pictureElement.querySelector('.picture__likes').textContent = pictures[i].likes;
+  pictureElement.querySelector('.picture__comments').textContent = pictures[i].comments.length;
+
+  fragment.appendChild(pictureElement);
+}
+picturesElementList.appendChild(fragment);
+
+
