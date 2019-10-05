@@ -33,6 +33,9 @@ var USERNAMES = [
   'Лев',
 ];
 var NUMBER_PICTURES = 25;
+var ESC_KEYCODE = 27;
+var SCALE_STEP = 25;
+var MAX_SCALE_VALUE = 100;
 
 // Создания массива из 25 сгенерированных JS объектов. Каждый объект массива ‐ описание фотографии, опубликованной пользователем
 var getPictures = function () {
@@ -65,8 +68,8 @@ var pictures = getPictures();
 var picturesElementList = document.querySelector('.pictures');
 
 var pictureTemplates = document.querySelector('#picture')
-    .content
-    .querySelector('.picture');
+  .content
+  .querySelector('.picture');
 
 // Отрисовка объектов
 var fragment = document.createDocumentFragment();
@@ -80,4 +83,66 @@ for (var i = 0; i < pictures.length; i++) {
 }
 picturesElementList.appendChild(fragment);
 
+// Загрузка изображения и показ формы редактирования
 
+var uploadFile = document.querySelector('.img-upload');
+var imgUploadInput = uploadFile.querySelector('.img-upload__input');
+var closeUploadFileButton = uploadFile.querySelector('.img-upload__cancel');
+
+// открывает окно редактирования загруженного фото
+var openUploadFile = function () {
+  uploadFile.querySelector('.img-upload__overlay').classList.remove('hidden');
+};
+
+// открытие окна редактирования фото при изменении значения инпута загрузки
+imgUploadInput.addEventListener('change', function () {
+  openUploadFile();
+});
+
+// закрывает окно редактирования загруженного фото
+// по клику на кнопку
+closeUploadFileButton.addEventListener('click', function () {
+  uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+});
+//  по ESC
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+  }
+});
+
+//  Редактирование изображения
+// Изменение счётчика по клику
+// Изменение изображения по клику
+
+var scaleControlButtons = function () {
+  var scaleControlSmallerButton = uploadFile.querySelector('.scale__control--smaller');
+  var scaleControlBiggerButton = uploadFile.querySelector('.scale__control--bigger');
+  var scaleControlValue = uploadFile.querySelector('.scale__control--value');
+  scaleControlValue.value = MAX_SCALE_VALUE + '%';
+  var fieldValue = parseFloat(scaleControlValue.value, SCALE_STEP);
+  var imgUploadPreview = uploadFile.querySelector('.img-upload__preview img');
+
+  var transformCalc = MAX_SCALE_VALUE * 0.0075;
+  var transformScale = 'transform:scale' + '(' + transformCalc + ')';
+
+  scaleControlSmallerButton.addEventListener('click', function () {
+    if (fieldValue > SCALE_STEP) {
+      fieldValue -= SCALE_STEP;
+      scaleControlValue.value = fieldValue + '%';
+
+      imgUploadPreview.setAttribute('style', transformScale);
+
+    }
+  });
+
+  scaleControlBiggerButton.addEventListener('click', function () {
+    if (fieldValue < MAX_SCALE_VALUE) {
+      fieldValue += SCALE_STEP;
+      scaleControlValue.value = fieldValue + '%';
+    }
+  });
+};
+
+var scale = document.querySelectorAll('.scale');
+scale.forEach(scaleControlButtons);
