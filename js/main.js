@@ -94,55 +94,77 @@ var openUploadFile = function () {
   uploadFile.querySelector('.img-upload__overlay').classList.remove('hidden');
 };
 
+//  Редактирование изображения
+// Изменение счётчика по клику
+// Изменение изображения по клику
+var fieldValue = MAX_SCALE_VALUE;
+var scaleControlSmallerButton = uploadFile.querySelector('.scale__control--smaller');
+var scaleControlBiggerButton = uploadFile.querySelector('.scale__control--bigger');
+var scaleControlValue = uploadFile.querySelector('.scale__control--value');
+var imgUploadPreview = uploadFile.querySelector('.img-upload__preview img');
+
+var setScaleNumber = function () {
+  scaleControlValue.value = fieldValue + '%';
+};
+
+var setImgTransform = function () {
+  imgUploadPreview.style.transform = 'scale(' + fieldValue / 100 + ')';
+};
+
+var decreaseScaleImg = function () {
+  if (fieldValue > SCALE_STEP) {
+    fieldValue -= SCALE_STEP;
+    setScaleNumber();
+    setImgTransform();
+  }
+};
+
+var increaseScaleImg = function () {
+  if (fieldValue < MAX_SCALE_VALUE) {
+    fieldValue += SCALE_STEP;
+    setScaleNumber();
+    setImgTransform();
+  }
+};
+
+scaleControlSmallerButton.addEventListener('click', decreaseScaleImg);
+scaleControlBiggerButton.addEventListener('click', increaseScaleImg);
+
 // открытие окна редактирования фото при изменении значения инпута загрузки
 imgUploadInput.addEventListener('change', function () {
   openUploadFile();
+  setScaleNumber();
 });
 
 // закрывает окно редактирования загруженного фото
+var closeImgUploadOverlay = function () {
+  uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+};
+
 // по клику на кнопку
 closeUploadFileButton.addEventListener('click', function () {
-  uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+  closeImgUploadOverlay();
 });
 //  по ESC
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+    closeImgUploadOverlay();
   }
 });
 
-//  Редактирование изображения
-// Изменение счётчика по клику
-// Изменение изображения по клику
+// Наложение эффектов на изображения
+var imgUploadEffects = document.querySelector('.img-upload__effects');
 
-var scaleControlButtons = function () {
-  var scaleControlSmallerButton = uploadFile.querySelector('.scale__control--smaller');
-  var scaleControlBiggerButton = uploadFile.querySelector('.scale__control--bigger');
-  var scaleControlValue = uploadFile.querySelector('.scale__control--value');
-  scaleControlValue.value = MAX_SCALE_VALUE + '%';
-  var fieldValue = parseFloat(scaleControlValue.value, SCALE_STEP);
-  var imgUploadPreview = uploadFile.querySelector('.img-upload__preview img');
-
-  var transformCalc = MAX_SCALE_VALUE * 0.0075;
-  var transformScale = 'transform:scale' + '(' + transformCalc + ')';
-
-  scaleControlSmallerButton.addEventListener('click', function () {
-    if (fieldValue > SCALE_STEP) {
-      fieldValue -= SCALE_STEP;
-      scaleControlValue.value = fieldValue + '%';
-
-      imgUploadPreview.setAttribute('style', transformScale);
-
-    }
-  });
-
-  scaleControlBiggerButton.addEventListener('click', function () {
-    if (fieldValue < MAX_SCALE_VALUE) {
-      fieldValue += SCALE_STEP;
-      scaleControlValue.value = fieldValue + '%';
-    }
-  });
-};
-
-var scale = document.querySelectorAll('.scale');
-scale.forEach(scaleControlButtons);
+imgUploadEffects.addEventListener('change', function (evt) {
+  if (evt.target.value === 'chrome') {
+    imgUploadPreview.classList.add('effects__preview--chrome');
+  } else if (evt.target.value === 'sepia') {
+    imgUploadPreview.classList.add('effects__preview--sepia');
+  } else if (evt.target.value === 'marvin') {
+    imgUploadPreview.classList.add('effects__preview--marvin');
+  } else if (evt.target.value === 'phobos') {
+    imgUploadPreview.classList.add('effects__preview--phobos');
+  } else if (evt.target.value === 'heat') {
+    imgUploadPreview.classList.add('effects__preview--heat');
+  }
+});
