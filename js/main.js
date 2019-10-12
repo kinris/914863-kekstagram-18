@@ -36,6 +36,8 @@ var NUMBER_PICTURES = 25;
 var ESC_KEYCODE = 27;
 var SCALE_STEP = 25;
 var MAX_SCALE_VALUE = 100;
+var MAX_HASH_TAG_NUMBER = 5;
+var MAX_HASH_TAG_LENGTH = 20;
 
 // Создания массива из 25 сгенерированных JS объектов. Каждый объект массива ‐ описание фотографии, опубликованной пользователем
 var getPictures = function () {
@@ -153,18 +155,104 @@ document.addEventListener('keydown', function (evt) {
 });
 
 // Наложение эффектов на изображения
-var imgUploadEffects = document.querySelector('.img-upload__effects');
 
+//  это код из видео ----------------
+// переключение эффектов
+var imgUploadEffects = document.querySelector('.img-upload__effects');
+var currentClass = null;
 imgUploadEffects.addEventListener('change', function (evt) {
-  if (evt.target.value === 'chrome') {
-    imgUploadPreview.classList.add('effects__preview--chrome');
-  } else if (evt.target.value === 'sepia') {
-    imgUploadPreview.classList.add('effects__preview--sepia');
-  } else if (evt.target.value === 'marvin') {
-    imgUploadPreview.classList.add('effects__preview--marvin');
-  } else if (evt.target.value === 'phobos') {
-    imgUploadPreview.classList.add('effects__preview--phobos');
-  } else if (evt.target.value === 'heat') {
-    imgUploadPreview.classList.add('effects__preview--heat');
+  imgUploadPreview.classList.remove(currentClass);
+  currentClass = 'effects__preview--' + evt.target.value;
+  imgUploadPreview.classList.add(currentClass);
+});
+
+// интенсивность эффектов
+var effectLevel = uploadFile.querySelector('.effect-level__value');
+var effectLevelPin = uploadFile.querySelector('.effect-level__pin');
+var effectLevelValue = uploadFile.querySelector('.effect-level__value');
+var getFilterValue = function (min, max) {
+  return (min + max) / 100 * (+effectLevelValue.value);
+};
+imgUploadEffects.addEventListener('change', setEffect);
+
+var setEffect = function (evt) {
+  effectLevel = 100;
+  imgUploadPreview.classList.remove(currentClass);
+  currentClass = 'effects__preview--' + evt.target.value;
+  imgUploadPreview.classList.add('effects__preview--' + evt.target.value);
+  switch (evt.target.value) {
+    case 'chrome':
+      imgUploadPreview.style.filter = 'grayscale(' + getFilterValue(0, 1) + ')';
+      break;
+    case 'sepia':
+      imgUploadPreview.style.filter = 'sepia(' + getFilterValue(0, 1) + ')';
+      break;
+    case 'marvin':
+      imgUploadPreview.style.filter = 'invert(' + effectLevel + '%)';
+      break;
+    case 'phobos':
+      imgUploadPreview.style.filter = 'blur(' + getFilterValue(1, 3) + 'px)';
+      break;
+    case 'heat':
+      imgUploadPreview.style.filter = 'brightness(' + getFilterValue(1, 3) + ')';
+      break;
+    case 'none':
+      imgUploadPreview.style.filter = '';
+      break;
+  }
+};
+
+effectLevelPin.addEventListener('mouseup', function () {
+  var effectLine = document.querySelector('.effect-level__line');
+  var effectLineWidth = effectLine.offsetWidth;
+  effectLevel.value = Math.floor(effectLevelPin.offsetLeft * 100 / effectLineWidth);
+});
+
+// валидация хештегов
+var imageUploadForm = document.querySelector('.img-upload__form');
+var hashTagInput = uploadFile.querySelector('.text__hashtags');
+var uploadFormSubmit = uploadFile.querySelector('.img-upload__submit');
+
+var checkValidHashTag = function (hashtagStr) {
+  hashTagInput.setCustomValidity('');
+  var hashTagArray = hashtagStr.trim().toLowerCase().split(' ');
+  if (hashtagStr.trim() === '') {
+    return 'Вы ничего не написали';
+  }
+  var newHashTagArray = hashTagArray.map(function (element) {
+    return element.trim();
+  });
+  var errorText = '';
+
+  if (newHashTagArray.length > MAX_HASH_TAG_NUMBER) {
+    errorText = 'Количество хэштэгов больше 5';
+    return errorText;
+  }
+
+  for (var j = 0; j < newHashTagArray.length; j++) {
+    var currentHash = newHashTagArray[j];
+    if (currentHash[0] !== '#') {
+      errorText = 'хэштэг должен начинаться с #';
+    } else if (currentHash.length === 1) {
+      errorText = 'в хэштеге должны быть символы кроме #';
+    } else if (currentHash.length > MAX_HASH_TAG_LENGTH) {
+      errorText = 'максимальная длина хэштэга:' + MAX_HASH_TAG_LENGTH + 'символов';
+    } else if (newHashTagArray.indexOf(currentHash, i + 1) !== -1) {
+      errorText = 'хэштеги не могут быть одинаковыми';
+    }
+    if (errorText) {
+      break;
+    }
+  }
+  return errorText;
+};
+
+uploadFormSubmit.addEventListener('click', function () {
+  var textErrorHashTag = checkValidHashTag(hashTagInput.value);
+
+  if (textErrorHashTag !== '') {
+    hashTagInput.setCustomValidity(textErrorHashTag);
+  } else {
+    imageUploadForm.submit();
   }
 });
