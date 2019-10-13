@@ -38,7 +38,7 @@ var SCALE_STEP = 25;
 var MAX_SCALE_VALUE = 100;
 var MAX_HASH_TAG_NUMBER = 5;
 var MAX_HASH_TAG_LENGTH = 20;
-var MAX_DESCRIPTION_NUMBER = 140;
+// var MAX_DESCRIPTION_NUMBER = 140;
 
 // Создания массива из 25 сгенерированных JS объектов. Каждый объект массива ‐ описание фотографии, опубликованной пользователем
 var getPictures = function () {
@@ -164,42 +164,39 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
-
 // Наложение эффектов на изображения
-
-//  это код из видео ----------------
-// переключение эффектов
-var imgUploadEffects = document.querySelector('.img-upload__effects');
-var currentClass = null;
-imgUploadEffects.addEventListener('change', function (evt) {
-  imgUploadPreview.classList.remove(currentClass);
-  currentClass = 'effects__preview--' + evt.target.value;
-  imgUploadPreview.classList.add(currentClass);
-});
-
-// интенсивность эффектов
 var effectLevel = uploadFile.querySelector('.effect-level');
 var effectLevelPin = uploadFile.querySelector('.effect-level__pin');
 var effectLevelDepth = uploadFile.querySelector('.effect-level__depth');
 var effectLevelValue = uploadFile.querySelector('.effect-level__value');
+
+// переключение эффектов
+var imgUploadEffects = document.querySelector('.img-upload__effects');
+var currentClass = null;
+effectLevel.style.display = 'none';
+imgUploadEffects.addEventListener('change', function (evt) {
+  imgUploadPreview.classList.remove(currentClass);
+  currentClass = 'effects__preview--' + evt.target.value;
+  imgUploadPreview.classList.add(currentClass);
+  effectLevelValue = 100;
+  // добавить сброс ползунка до 100%
+  effectLevelPin.style.left = '100%';
+  effectLevelDepth.style.width = '100%';
+  // скрыть ползунок у эффекта "Оригинал"
+  if (evt.target.value === 'none') {
+    effectLevel.style.display = 'none';
+  } else {
+    effectLevel.style.display = 'block';
+  }
+});
 
 var getFilterValue = function (min, max) {
   return (min + max) / 100 * (+effectLevelValue.value);
 };
 
 imgUploadEffects.addEventListener('change', setEffect);
-// добавить сброс ползунка до 100%
-// effectLevelPin.setAttribute('style', 'left: 100%');
-effectLevelPin.style.left = '100%';
-// effectLevelDepth.setAttribute('style', 'width: 100%');
-effectLevelDepth.style.width = '100%';
 
 var setEffect = function (evt) {
-  effectLevelValue = 100;
-
-  imgUploadPreview.classList.remove(currentClass);
-  currentClass = 'effects__preview--' + evt.target.value;
-  imgUploadPreview.classList.add('effects__preview--' + evt.target.value);
   switch (evt.target.value) {
     case 'chrome':
       imgUploadPreview.style.filter = 'grayscale(' + getFilterValue(0, 1) + ')';
@@ -218,14 +215,9 @@ var setEffect = function (evt) {
       break;
     case 'none':
       imgUploadPreview.style.filter = '';
-      // скрыть ползунок дисплей нон
-      // effectLevel.setAttribute('style', 'display: none');
-      effectLevel.style.display = 'none';
       break;
   }
 };
-// Ползунок скрывается, если код вынести сюда
-
 
 effectLevelPin.addEventListener('mouseup', function () {
   var effectLine = document.querySelector('.effect-level__line');
