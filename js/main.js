@@ -64,9 +64,10 @@ var getPictures = function () {
   }
   return picturesList;
 };
+var pictures = getPictures();
+// ------/data.js
 
 // На основе данных, созданных в предыдущем пункте и шаблона #picture создайте DOM-элементы, соответствующие фотографиям и заполните их данными из массива
-var pictures = getPictures();
 
 var picturesElementList = document.querySelector('.pictures');
 
