@@ -5,8 +5,8 @@
   var MAX_HASH_TAG_LENGTH = 20;
 
   var imageUploadForm = document.querySelector('.img-upload__form');
-  var hashTagInput = window.uploadFile.querySelector('.text__hashtags');
-  var uploadFormSubmit = window.uploadFile.querySelector('.img-upload__submit');
+  var hashTagInput = window.effects.uploadFile.querySelector('.text__hashtags');
+  var uploadFormSubmit = window.effects.uploadFile.querySelector('.img-upload__submit');
 
   var errorText = '';
 
@@ -29,13 +29,13 @@
     for (var i = 0; i < newHashTagArray.length; i++) {
       var currentHash = newHashTagArray[i];
       if (currentHash[0] !== '#') {
-        errorText = 'хэштэг должен начинаться с #';
+        errorText = 'Хэштэг должен начинаться с #';
       } else if (currentHash.length === 1) {
-        errorText = 'в хэштеге должны быть символы кроме #';
+        errorText = 'В хэштеге должны быть символы кроме #';
       } else if (currentHash.length > MAX_HASH_TAG_LENGTH) {
-        errorText = 'максимальная длина хэштэга:' + MAX_HASH_TAG_LENGTH + 'символов';
+        errorText = 'Максимальная длина хэштэга: ' + MAX_HASH_TAG_LENGTH + ' символов';
       } else if (newHashTagArray.indexOf(currentHash, i + 1) !== -1) {
-        errorText = 'хэштеги не могут быть одинаковыми';
+        errorText = 'Хэштеги не могут быть одинаковыми';
       }
       if (errorText) {
         break;
