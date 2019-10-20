@@ -1,12 +1,6 @@
 'use strict';
 
 (function () {
-  // генерация случайных чисел
-  var getRandomInteger = function (min, max) {
-    var rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
-  };
-
   // константы
   var DESCRIPTION = [
     'Отличная фотография',
@@ -41,19 +35,19 @@
     var picturesList = [];
     for (var i = 1; i <= NUMBER_PICTURES; i++) {
       var comments = [];
-      var countComments = getRandomInteger(1, 7);
+      var countComments = window.util.getRandomInteger(1, 7);
       for (var j = 0; j < countComments; j++) {
         var comment = {
-          avatar: 'img/avatar' + getRandomInteger(1, 6) + '.svg',
-          message: COMMENTS[getRandomInteger(0, COMMENTS.length - 1)],
-          name: USERNAMES[getRandomInteger(0, USERNAMES.length - 1)],
+          avatar: 'img/avatar' + window.util.getRandomInteger(1, 6) + '.svg',
+          message: COMMENTS[window.util.getRandomInteger(0, COMMENTS.length - 1)],
+          name: USERNAMES[window.util.getRandomInteger(0, USERNAMES.length - 1)],
         };
         comments.push(comment);
       }
       var pictures = {
         url: 'photos/' + i + '.jpg',
-        description: DESCRIPTION[getRandomInteger(0, DESCRIPTION.length - 1)],
-        likes: getRandomInteger(15, 200),
+        description: DESCRIPTION[window.util.getRandomInteger(0, DESCRIPTION.length - 1)],
+        likes: window.util.getRandomInteger(15, 200),
         comments: comments,
       };
       picturesList.push(pictures);
@@ -61,6 +55,7 @@
     return picturesList;
   };
 
-  var pictures = getPictures();
-  window.pictures = pictures;
+  window.data = {
+    pictures: getPictures()
+  };
 })();
