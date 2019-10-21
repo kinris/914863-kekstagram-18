@@ -5,8 +5,8 @@
   var MAX_HASH_TAG_LENGTH = 20;
 
   var imageUploadForm = document.querySelector('.img-upload__form');
-  var hashTagInput = window.effects.uploadFile.querySelector('.text__hashtags');
-  var uploadFormSubmit = window.effects.uploadFile.querySelector('.img-upload__submit');
+  var hashTagInput = window.elements.uploadFile.querySelector('.text__hashtags');
+  var uploadFormSubmit = window.elements.uploadFile.querySelector('.img-upload__submit');
 
   var errorText = '';
 

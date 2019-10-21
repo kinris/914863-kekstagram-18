@@ -9,9 +9,9 @@
   // Изменение счётчика по клику
   // Изменение изображения по клику
   var fieldValue = MAX_SCALE_VALUE;
-  var scaleControlSmallerButton = window.effects.uploadFile.querySelector('.scale__control--smaller');
-  var scaleControlBiggerButton = window.effects.uploadFile.querySelector('.scale__control--bigger');
-  var scaleControlValue = window.effects.uploadFile.querySelector('.scale__control--value');
+  var scaleControlSmallerButton = window.elements.uploadFile.querySelector('.scale__control--smaller');
+  var scaleControlBiggerButton = window.elements.uploadFile.querySelector('.scale__control--bigger');
+  var scaleControlValue = window.elements.uploadFile.querySelector('.scale__control--value');
 
   var setScaleNumber = function () {
     scaleControlValue.value = fieldValue + '%';
@@ -21,7 +21,7 @@
   };
 
   var setImgTransform = function () {
-    window.effects.imgUploadPreview.style.transform = 'scale(' + fieldValue / 100 + ')';
+    window.elements.imgUploadPreview.style.transform = 'scale(' + fieldValue / 100 + ')';
   };
 
   var decreaseScaleImg = function () {

@@ -2,18 +2,17 @@
 
 (function () {
   var ESC_KEYCODE = 27;
-  // var uploadFile = document.querySelector('.img-upload');
-  // var imgUploadInput = uploadFile.querySelector('.img-upload__input');
-  var closeUploadFileButton = window.effects.uploadFile.querySelector('.img-upload__cancel');
+
+  var closeUploadFileButton = window.elements.uploadFile.querySelector('.img-upload__cancel');
 
   // открывает окно редактирования загруженного фото
   var openUploadFile = function () {
-    window.effects.uploadFile.querySelector('.img-upload__overlay').classList.remove('hidden');
+    window.elements.uploadFile.querySelector('.img-upload__overlay').classList.remove('hidden');
   };
 
   // закрывает окно редактирования загруженного фото
   var closeImgUploadOverlay = function () {
-    window.effects.uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
+    window.elements.uploadFile.querySelector('.img-upload__overlay').classList.add('hidden');
   };
 
   // по клику на кнопку
@@ -32,7 +31,7 @@
     }
   });
 
-  window.effects.imgUploadInput.addEventListener('change', function () {
+  window.elements.imgUploadInput.addEventListener('change', function () {
     openUploadFile();
     window.imgScale.setScaleNumber();
   });
