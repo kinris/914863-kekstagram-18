@@ -64,10 +64,10 @@ var getPictures = function () {
   }
   return picturesList;
 };
-
-// На основе данных, созданных в предыдущем пункте и шаблона #picture создайте DOM-элементы, соответствующие фотографиям и заполните их данными из массива
 var pictures = getPictures();
 
+
+// На основе данных, созданных в предыдущем пункте и шаблона #picture создайте DOM-элементы, соответствующие фотографиям и заполните их данными из массива
 var picturesElementList = document.querySelector('.pictures');
 
 var pictureTemplates = document.querySelector('#picture')
@@ -91,7 +91,6 @@ var renderPhotos = function () {
 renderPhotos();
 
 // Загрузка изображения и показ формы редактирования
-
 var uploadFile = document.querySelector('.img-upload');
 var imgUploadInput = uploadFile.querySelector('.img-upload__input');
 var closeUploadFileButton = uploadFile.querySelector('.img-upload__cancel');
@@ -164,13 +163,13 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
-// Наложение эффектов на изображения
+// // Наложение эффектов на изображения
 var effectLevel = uploadFile.querySelector('.effect-level');
 var effectLevelPin = uploadFile.querySelector('.effect-level__pin');
 var effectLevelDepth = uploadFile.querySelector('.effect-level__depth');
 var effectLevelValue = uploadFile.querySelector('.effect-level__value');
 
-// переключение эффектов
+// // переключение эффектов
 var imgUploadEffects = document.querySelector('.img-upload__effects');
 var currentClass = null;
 effectLevel.style.display = 'none';
@@ -227,8 +226,8 @@ effectLevelPin.addEventListener('mouseup', function () {
 
 // валидация хештегов
 var imageUploadForm = document.querySelector('.img-upload__form');
-var hashTagInput = uploadFile.querySelector('.text__hashtags');
-var uploadFormSubmit = uploadFile.querySelector('.img-upload__submit');
+var hashTagInput = window.uploadFile.querySelector('.text__hashtags');
+var uploadFormSubmit = window.uploadFile.querySelector('.img-upload__submit');
 
 var errorText = '';
 
