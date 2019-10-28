@@ -21,6 +21,7 @@
     picturesElementList.appendChild(fragment);
   };
 
-  renderPhotos(window.data.pictures);
-
+  window.gallery = {
+    renderPhotos: renderPhotos
+  };
 })();
