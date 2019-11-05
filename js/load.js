@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data1';
+  var URL = 'https://js.dump.academy/kekstagram/data';
   var STATUS_SUCCESS = 200;
   var MAX_TIMEOUT = 10000;
 
