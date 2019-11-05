@@ -1,17 +1,18 @@
 'use strict';
 (function () {
   var ESC_KEYCODE = 27;
-
-  var main = document.querySelector('main');
-
-  var errorTemplate = document.querySelector('#error')
-    .content
-    .querySelector('.error');
-
-  var errorInner = errorTemplate.querySelector('.error__inner');
-
   var renderError = function () {
-    var error = errorTemplate.cloneNode(true);
+
+    var main = document.querySelector('main');
+
+    var error = document.querySelector('#error')
+      .content
+      .querySelector('.error');
+
+    main.appendChild(error);
+
+    var errorInner = error.querySelector('.error__inner');
+
     var closeErrorPopup = function () {
       error.remove();
     };
@@ -30,10 +31,6 @@
         closeErrorPopup();
       }
     });
-
-
-    main.appendChild(error);
-
   };
 
   window.error = {
